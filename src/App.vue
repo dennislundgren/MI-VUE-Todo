@@ -1,27 +1,73 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+  <AddTodo v-on:add-todo="addTodoMethod" />
+  <TodoList
+    :todoItems="todo_items"
+    v-on:remove-todo="removeTodo"
+    v-on:update-status="updateStatus"
+  />
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import HelloWorld from "./components/HelloWorld.vue";
+import AddTodo from "./components/AddTodo.vue";
+import TodoList from "./components/TodoList.vue";
+import { TodoModel } from "./models/TodoModel";
 
 @Options({
   components: {
-    HelloWorld,
+    AddTodo,
+    TodoList,
   },
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  todo_items: TodoModel[] = [];
+
+  addTodoMethod(newTodo: TodoModel) {
+    this.todo_items.push(newTodo);
+    this.updateLocalStorage(this.todo_items);
+  }
+  removeTodo(todo: TodoModel) {
+    const i = this.todo_items.findIndex((i) => i.id === todo.id);
+    this.todo_items.splice(i, 1);
+    this.updateLocalStorage(this.todo_items);
+  }
+  updateStatus(todo: TodoModel) {
+    const i = this.todo_items.findIndex((i) => i.id === todo.id);
+    console.log("Här är jag", this.todo_items[i]);
+    this.todo_items[i] = todo;
+    this.updateLocalStorage(this.todo_items);
+  }
+  updateLocalStorage(todos: TodoModel[]) {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }
+  mounted() {
+    const todos: string | null = localStorage.getItem("todos");
+    if (todos) {
+      this.todo_items = JSON.parse(todos);
+    }
+  }
+}
 </script>
 
-<style>
+<style lang="scss">
+@import url("https://use.typekit.net/oqp6wjf.css");
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: prestige-elite-std, monospace;
+  font-size: 14px;
+}
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+  gap: 25px;
+  & > * {
+    width: clamp(300px, 90vw, 600px);
+  }
 }
 </style>
