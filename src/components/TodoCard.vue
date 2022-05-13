@@ -57,6 +57,13 @@ export default class TodoCard extends Vue {
 </script>
 
 <style lang="scss">
+@mixin hover {
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @content;
+    }
+  }
+}
 :root {
   --transition: all 0.1s ease-out;
   --transition-slow: all 0.5s ease-out;
@@ -68,7 +75,7 @@ export default class TodoCard extends Vue {
   box-shadow: 1.5px 3px 6px rgba($color: #000000, $alpha: 0.16);
   padding: 17px;
   transition: var(--transition);
-  &:hover {
+  @include hover {
     transform: scale(1.02);
   }
   .todo-content {
@@ -105,16 +112,23 @@ export default class TodoCard extends Vue {
         border: 1px solid #707070;
         border-radius: 8px;
         background-color: white;
+        color: #000000;
         &.btn {
           transition: var(--transition);
-          &--remove:hover {
-            background-color: #ee6d6d;
+          &--remove {
+            @include hover {
+              background-color: #ee6d6d;
+            }
           }
-          &--done:hover {
-            background-color: #eed66d;
+          &--done {
+            @include hover {
+              background-color: #eed66d;
+            }
           }
-          &--undo:hover {
-            background-color: #b0ee6d;
+          &--undo {
+            @include hover {
+              background-color: #b0ee6d;
+            }
           }
         }
       }

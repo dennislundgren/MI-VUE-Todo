@@ -24,9 +24,9 @@ export default class AddTodo extends Vue {
       d.getMonth(),
       d.getDate().toString(),
       d.getDay(),
-      d.getHours().toString(),
-      d.getMinutes().toString(),
-      d.getSeconds().toString()
+      d.getHours(),
+      d.getMinutes(),
+      d.getSeconds()
     );
     const newTodo = new TodoModel(
       this.todoText,
@@ -41,6 +41,13 @@ export default class AddTodo extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@mixin hover {
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @content;
+    }
+  }
+}
 .add-todo {
   height: 62px;
   display: flex;
@@ -54,7 +61,9 @@ export default class AddTodo extends Vue {
     width: 75%;
     border: none;
     border-bottom: 1px solid #707070;
+    border-radius: 0;
     align-self: flex-end;
+    font-size: 16px;
     &:focus {
       outline: none;
     }
@@ -67,8 +76,9 @@ export default class AddTodo extends Vue {
     border-radius: 8px;
     background-color: white;
     transition: var(--transition);
-    &:hover {
-      text-decoration: underline;
+    color: #000000;
+    @include hover {
+      background-color: #b0ee6d;
     }
   }
 }

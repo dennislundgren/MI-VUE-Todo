@@ -23,19 +23,19 @@ export class TodoDate {
     month: number,
     date: string,
     day: number,
-    hour: string,
-    minute: string,
-    second: string
+    hour: number,
+    minute: number,
+    second: number
   ) {
     this.year = year;
     this.month = this.formatMonth(month);
     this.date = date;
-    this.day = this.formatDate(day);
-    this.hour = hour;
-    this.minute = minute;
-    this.second = second;
+    this.day = this.formatDay(day);
+    this.hour = this.formatIntegers(hour);
+    this.minute = this.formatIntegers(minute);
+    this.second = this.formatIntegers(second);
   }
-  formatDate(e: number) {
+  formatDay(e: number) {
     const weekday = [
       "Monday",
       "Tuesday",
@@ -63,5 +63,9 @@ export class TodoDate {
       "December",
     ];
     return month[e - 1];
+  }
+  formatIntegers(n: number) {
+    const i = n > 9 ? "" + n : "0" + n;
+    return i.toString();
   }
 }
